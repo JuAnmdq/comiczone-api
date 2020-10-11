@@ -1,0 +1,20 @@
+#node
+node_modules
+npm-debug.log
+package-lock.json
+yarn.lock
+
+#jest
+coverage
+
+#project
+dist
+
+#environment variables
+.env
+
+#ide
+.vscode
+
+# Local Netlify folder
+.netlify
