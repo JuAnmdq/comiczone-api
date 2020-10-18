@@ -3,7 +3,8 @@ import Comic from '../models/Comic.js'
 
 async function createComic(comic) {
   try {
-    const createdComic = await Comic.create(comic, new Date())
+    const createdComic = new Comic(comic, new Date())
+    await createdComic.save()
     return createdComic
   } catch (error) {
     throw new Error(`Cannot create comic: ${error}`)

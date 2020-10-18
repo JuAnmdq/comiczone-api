@@ -4,7 +4,10 @@ export default class ComicController {
   static async create(req, res) {
     try {
       const comic = await ComicService.createComic(req.body)
-      res.status(201).json(comic)
+      res.status(201).json({
+        message: 'Comic has been added successfully',
+        comic,
+      })
     } catch (error) {
       res.status(500).send(error)
     }
