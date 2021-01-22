@@ -16,7 +16,10 @@ export default class ComicController {
   static async update(req, res) {
     try {
       const comic = await ComicService.updateComic(req.body, req.params.id)
-      res.status(200).json(comic)
+      res.status(200).json({
+        message: 'Comic has been updated successfully',
+        comic,
+      })
     } catch (error) {
       res.status(500).send(error)
     }
