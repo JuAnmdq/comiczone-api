@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon --no-warnings --experimental-modules --es-module-specifier-resolution=node",
     "test": "jest --watchAll --no-cache",
     "lint": "eslint ./ --color"
