@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import UserController from '../controllers/UserController.js'
+import UserController from '../controllers/UserController'
 
 const router = express.Router()
 

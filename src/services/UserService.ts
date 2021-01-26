@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs'
-import User from '../models/User.js'
+import User, { User as IUser, UserDocument } from '../models/User'
 
-async function createUser(userPayload) {
+async function createUser(userPayload: IUser) {
   try {
-    const user = new User(userPayload, new Date())
+    const user = new User(userPayload)
     await user.save()
     return {
       message: 'User added successfully',
@@ -13,7 +13,7 @@ async function createUser(userPayload) {
   }
 }
 
-async function updateUser(nextUser, id) {
+async function updateUser(nextUser: UserDocument, id: string) {
   try {
     const salt = await bcrypt.genSalt(10)
     nextUser.password = await bcrypt.hash(nextUser.password, salt)
@@ -28,7 +28,7 @@ async function updateUser(nextUser, id) {
   }
 }
 
-async function deleteUser(id) {
+async function deleteUser(id: string) {
   try {
     await User.deleteOne({ _id: id })
 
@@ -40,7 +40,7 @@ async function deleteUser(id) {
   }
 }
 
-async function userExists(username) {
+async function userExists(username: string) {
   try {
     const counter = await User.count({ username })
     return counter > 0
@@ -49,7 +49,7 @@ async function userExists(username) {
   }
 }
 
-async function emailExists(email) {
+async function emailExists(email: string) {
   try {
     const counter = await User.count({ email })
     return counter > 0
@@ -58,7 +58,7 @@ async function emailExists(email) {
   }
 }
 
-async function getUser(id) {
+async function getUser(id: string) {
   try {
     const user = await User.findById(id)
     return user

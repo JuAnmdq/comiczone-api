@@ -1,9 +1,16 @@
 import mongoose from 'mongoose'
-import Comic from '../models/Comic.js'
+import Comic, { Comic as IComic } from '../models/Comic'
 
-async function createComic(comic) {
+type Query = {
+  sort?: 'visited' | 'avgRating' | 'recommend' | 'searches' | 'releaseDate'
+  order?: '-1' | '1'
+  limit?: number
+  offset?: number
+}
+
+async function createComic(comic: IComic) {
   try {
-    const createdComic = new Comic(comic, new Date())
+    const createdComic = new Comic(comic)
     await createdComic.save()
     return createdComic
   } catch (error) {
@@ -11,7 +18,7 @@ async function createComic(comic) {
   }
 }
 
-async function updateComic(nextComic, id) {
+async function updateComic(nextComic: IComic, id: string) {
   try {
     const updatedComic = await Comic.findOneAndUpdate({ _id: id }, nextComic)
 
@@ -21,7 +28,7 @@ async function updateComic(nextComic, id) {
   }
 }
 
-async function deleteComic(id) {
+async function deleteComic(id: string) {
   try {
     await Comic.deleteOne({ _id: id })
 
@@ -31,7 +38,7 @@ async function deleteComic(id) {
   }
 }
 
-async function getComic(id) {
+async function getComic(id: string) {
   try {
     const aggregateQuery = [
       {
@@ -67,13 +74,13 @@ async function getComic(id) {
   }
 }
 
-async function getComics(query) {
+async function getComics(query: Query) {
   try {
     const { sort, order } = query
     const offset = Number(query.offset)
     const limit = Number(query.limit)
-    let aggregateSort = []
-    let aggregatePagination = []
+    let aggregateSort: any[] = []
+    let aggregatePagination: any[] = []
 
     if (sort && order) {
       let sortCriteria

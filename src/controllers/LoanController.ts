@@ -1,8 +1,10 @@
+import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import Loan from '../models/Loan.js'
+import Loan from '../models/Loan'
+import { Credentials, VerifyRequest } from '../types'
 
 export default class LoanController {
-  static create(req, res) {
+  static create(req: Request, res: Response) {
     const { userId, comicId } = req.body
     const createdOn = new Date()
     const dueDate = new Date(createdOn.getTime())
@@ -12,7 +14,7 @@ export default class LoanController {
       comicId,
       dueDate,
     }
-    const loan = new Loan(model, createdOn)
+    const loan = new Loan(model)
 
     loan.save(err => {
       if (err) {
@@ -23,7 +25,7 @@ export default class LoanController {
     })
   }
 
-  static getById(req, res) {
+  static getById(req: Request, res: Response) {
     Loan.findById(req.params.id, (err, loan) => {
       if (err) {
         return res.send(err)
@@ -32,7 +34,7 @@ export default class LoanController {
     })
   }
 
-  static getAll(req, res) {
+  static getAll(req: Request, res: Response) {
     Loan.find({}, (err, loans) => {
       if (err) {
         return res.send(err)
@@ -42,7 +44,7 @@ export default class LoanController {
     })
   }
 
-  static getCurrents(req, res) {
+  static getCurrents(req: Request, res: Response) {
     const query = {
       dueDate: {
         $gte: new Date(),
@@ -58,13 +60,16 @@ export default class LoanController {
     })
   }
 
-  static getHistorical(req, res) {
-    jwt.verify(req.accessToken, 'secret key', (verifyErr, credentials) => {
+  static getHistorical(req: VerifyRequest, res: Response) {
+    jwt.verify(String(req.accessToken), 'secret key', (verifyErr, credentials: Credentials | object | undefined) => {
       if (verifyErr) {
         return res.sendStatus(403)
       }
-      const query = {
-        userId: credentials._id, // get user profile by credential's data
+
+      const { _id: userId } = credentials as Credentials // get user profile by credential's data
+
+      const query: any = {
+        userId,
       }
 
       const populateOptions = {

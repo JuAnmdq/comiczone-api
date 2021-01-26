@@ -1,15 +1,17 @@
+import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import Comment from '../models/Comment.js'
+import Comment from '../models/Comment'
+import { Credentials, VerifyRequest } from '../types'
 
 export default class CommentController {
-  static create(req, res) {
-    jwt.verify(req.accessToken, 'secret key', (verifyErr, credentials) => {
+  static create(req: VerifyRequest, res: Response) {
+    jwt.verify(String(req.accessToken), 'secret key', (verifyErr, credentials: Credentials | object | undefined) => {
       if (verifyErr) {
         return res.sendStatus(403)
       }
 
       const { content, comicId } = req.body
-      const userId = credentials._id // get user profile by credential's data
+      const { _id: userId } = credentials as Credentials // get user profile by credential's data
       const body = {
         comicId,
         userId,
@@ -29,7 +31,7 @@ export default class CommentController {
     })
   }
 
-  static delete(req, res) {
+  static delete(req: Request, res: Response) {
     Comment.remove({ _id: req.params.id }, err => {
       if (err) {
         return res.send(err)
@@ -39,7 +41,7 @@ export default class CommentController {
     })
   }
 
-  static getAll(req, res) {
+  static getAll(req: Request, res: Response) {
     const populateUsers = {
       path: 'userId',
       model: 'User',
@@ -70,7 +72,7 @@ export default class CommentController {
       })
   }
 
-  static getAllByComicId(req, res) {
+  static getAllByComicId(req: Request, res: Response) {
     const query = {
       comicId: req.params.comicId, // get user profile by credential's data
     }

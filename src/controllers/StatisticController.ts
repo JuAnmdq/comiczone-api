@@ -1,7 +1,7 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
-import Statistic from '../models/Statistic.js'
-import Comic from '../models/Comic.js'
+import Statistic from '../models/Statistic'
+import Comic from '../models/Comic'
 
 const router = express.Router()
 
@@ -9,7 +9,7 @@ router.use(bodyParser.urlencoded({ extended: true }))
 router.use(bodyParser.json())
 
 export default class StatisticController {
-  static update(req, res) {
+  static update(req: Request, res: Response) {
     const query = {
       comic: req.params.comicId,
     }
@@ -42,7 +42,7 @@ export default class StatisticController {
     })
   }
 
-  static getAll(req, res) {
+  static getAll(req: Request, res: Response) {
     Statistic.find({}, (err, statistics) => {
       if (err) {
         return res.send(err)

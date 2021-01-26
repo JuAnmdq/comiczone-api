@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import CommentController from '../controllers/CommentController.js'
-import { verifyToken } from '../middlewares/auth.js'
+import CommentController from '../controllers/CommentController'
+import { verifyToken } from '../middlewares/auth'
 
 const router = express.Router()
 

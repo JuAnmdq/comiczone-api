@@ -6,7 +6,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 
-import routes from './routes/index.js'
+import routes from './routes/index'
 
 const app = express()
 

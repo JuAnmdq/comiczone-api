@@ -1,8 +1,10 @@
-import jwt from 'jsonwebtoken'
-import User from '../models/User.js'
+import { Request, Response } from 'express'
+import jwt, { VerifyErrors } from 'jsonwebtoken'
+import User from '../models/User'
+import { Credentials, VerifyRequest } from '../types'
 
 export default class AuthController {
-  static register(req, res) {
+  static register(req: Request, res: Response) {
     const { password, confirmPassword } = req.body
     if (password !== confirmPassword) {
       return res.status(401).send({
@@ -11,7 +13,7 @@ export default class AuthController {
     }
     delete req.body.confirmPassword
 
-    const user = new User(req.body, new Date())
+    const user = new User(req.body)
     return user.save(err => {
       if (err) {
         return res.send(err)
@@ -21,35 +23,39 @@ export default class AuthController {
     })
   }
 
-  static getProfile(req, res) {
-    jwt.verify(req.accessToken, 'secret key', (verifyErr, credentials) => {
-      if (verifyErr) {
-        return res.status(403).send({
-          message: verifyErr.message,
-        })
-      }
-
-      const { username, password } = credentials
-
-      // get user profile by credential's data
-      return User.findOne({
-        username,
-        password,
-      }).exec((findErr, user) => {
-        if (findErr) {
-          return res.status(500).send(findErr)
+  static getProfile(req: VerifyRequest, res: Response) {
+    jwt.verify(
+      String(req?.accessToken),
+      'secret key',
+      (verifyErr: VerifyErrors | null, credentials: Credentials | object | undefined) => {
+        if (verifyErr) {
+          return res.status(403).send({
+            message: verifyErr.message,
+          })
         }
 
-        return res.send({
-          user,
-          loggedIn: true,
-          status: 1,
+        const { username, password } = credentials as Credentials
+
+        // get user profile by credential's data
+        return User.findOne({
+          username,
+          password,
+        }).exec((findErr, user) => {
+          if (findErr) {
+            return res.status(500).send(findErr)
+          }
+
+          return res.send({
+            user,
+            loggedIn: true,
+            status: 1,
+          })
         })
-      })
-    })
+      }
+    )
   }
 
-  static login(req, res) {
+  static login(req: Request, res: Response) {
     const { username, password } = req.body
 
     // this is param checking if they are provided
@@ -92,7 +98,7 @@ export default class AuthController {
     })
   }
 
-  static logout(req, res) {
+  static logout(req: Request, res: Response) {
     const auth = {
       loggedIn: false,
       status: 2,

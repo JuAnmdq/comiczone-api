@@ -1,7 +1,25 @@
-import mongoose from 'mongoose'
+import { Document, Model, Schema, model } from 'mongoose'
 import bcrypt from 'bcryptjs'
 
-const UserSchema = new mongoose.Schema({
+export interface User {
+  username: string
+  email: string
+  password: string
+  profile: string
+  firstName?: string
+  lastName?: string
+  createdOn: Date
+}
+
+export interface UserDocument extends User, Document {
+  comparePassword(candidatePassword: string): any
+}
+
+export interface UserModel extends Model<UserDocument> {
+  comparePassword(candidatePassword: string): any
+}
+
+const UserSchema = new Schema<UserDocument>({
   username: {
     type: String,
     required: true,
@@ -28,7 +46,7 @@ const UserSchema = new mongoose.Schema({
   },
 })
 
-UserSchema.pre('save', async function encriptPassword(next) {
+UserSchema.pre<UserDocument>('save', async function encriptPassword(next) {
   try {
     // if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(10)
@@ -41,7 +59,7 @@ UserSchema.pre('save', async function encriptPassword(next) {
   }
 })
 
-UserSchema.methods.comparePassword = async function compare(candidatePassword, cb) {
+UserSchema.methods.comparePassword = async function compare(candidatePassword: string) {
   try {
     return await bcrypt.compare(candidatePassword, this.password)
   } catch (error) {
@@ -49,4 +67,4 @@ UserSchema.methods.comparePassword = async function compare(candidatePassword, c
   }
 }
 
-export default mongoose.model('User', UserSchema)
+export default model<UserDocument, UserModel>('User', UserSchema)

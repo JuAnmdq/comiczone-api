@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import LoanController from '../controllers/LoanController.js'
-import { verifyToken } from '../middlewares/auth.js'
+import LoanController from '../controllers/LoanController'
+import { verifyToken } from '../middlewares/auth'
 
 const router = express.Router()
 

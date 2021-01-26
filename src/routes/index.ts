@@ -1,11 +1,11 @@
 import express from 'express'
-import auth from './auth.js'
-import users from './users.js'
-import comics from './comics.js'
-import comments from './comments.js'
-import loans from './loans.js'
-import ratings from './ratings.js'
-import statistics from './statistics.js'
+import auth from './auth'
+import users from './users'
+import comics from './comics'
+import comments from './comments'
+import loans from './loans'
+import ratings from './ratings'
+import statistics from './statistics'
 
 const router = express.Router()
 

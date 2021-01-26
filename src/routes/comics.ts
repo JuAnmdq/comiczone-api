@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import ComicController from '../controllers/ComicController.js'
+import ComicController from '../controllers/ComicController'
 
 const router = express.Router()
 

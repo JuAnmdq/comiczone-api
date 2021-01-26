@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import RatingController from '../controllers/RatingController.js'
-import { verifyToken } from '../middlewares/auth.js'
+import RatingController from '../controllers/RatingController'
+import { verifyToken } from '../middlewares/auth'
 
 const router = express.Router()
 

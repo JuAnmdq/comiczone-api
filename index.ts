@@ -1,5 +1,5 @@
-import app from './src/app.js'
-import db from './src/db.js'
+import app from './src/app'
+import db from './src/db'
 
 const port = process.env.PORT || 3000
 

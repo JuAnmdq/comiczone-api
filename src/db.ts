@@ -25,7 +25,7 @@ async function disconnect() {
   }
 }
 
-function resetCollection(collection) {
+function resetCollection(collection: string) {
   if (mongoose.connection.collection(collection).countDocuments()) {
     mongoose.connection.collection(collection).deleteMany({})
   }

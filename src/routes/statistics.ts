@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import StatisticController from '../controllers/StatisticController.js'
+import StatisticController from '../controllers/StatisticController'
 
 const router = express.Router()
 

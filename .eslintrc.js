@@ -1,10 +1,11 @@
 module.exports = {
-  extends: ['airbnb-base', 'prettier', 'plugin:prettier/recommended'],
-  plugins: ['prettier'],
+  parser: '@typescript-eslint/parser',
+  extends: ['airbnb-base', 'prettier', 'plugin:prettier/recommended', 'standard'],
+  plugins: ['prettier', '@typescript-eslint'],
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.js'],
+        extensions: ['.js', '.ts'],
       },
     },
   },

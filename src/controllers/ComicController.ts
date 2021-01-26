@@ -1,7 +1,8 @@
-import ComicService from '../services/ComicService.js'
+import { Request, Response } from 'express'
+import ComicService from '../services/ComicService'
 
 export default class ComicController {
-  static async create(req, res) {
+  static async create(req: Request, res: Response) {
     try {
       const comic = await ComicService.createComic(req.body)
       res.status(201).json({
@@ -13,7 +14,7 @@ export default class ComicController {
     }
   }
 
-  static async update(req, res) {
+  static async update(req: Request, res: Response) {
     try {
       const comic = await ComicService.updateComic(req.body, req.params.id)
       res.status(200).json({
@@ -25,7 +26,7 @@ export default class ComicController {
     }
   }
 
-  static async delete(req, res) {
+  static async delete(req: Request, res: Response) {
     try {
       const result = await ComicService.deleteComic(req.params.id)
       res.status(200).json(result)
@@ -34,7 +35,7 @@ export default class ComicController {
     }
   }
 
-  static async getById(req, res) {
+  static async getById(req: Request, res: Response) {
     try {
       const comic = await ComicService.getComic(req.params.id)
       res.status(200).json(comic)
@@ -43,7 +44,7 @@ export default class ComicController {
     }
   }
 
-  static async getAll(req, res) {
+  static async getAll(req: Request, res: Response) {
     try {
       const comics = await ComicService.getComics(req.query)
       res.status(200).json(comics)
