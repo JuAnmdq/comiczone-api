@@ -87,9 +87,13 @@ export default class AuthController {
       }
 
       // save the date the token was generated for already inside toJSON()
-      const token = jwt.sign({ username, password: user.password, _id: user._id }, 'secret key', {
-        expiresIn: '30m', // 60 * 60 * 24, // expires in 24 hours
-      })
+      const token = jwt.sign(
+        { username, password: user.password, profile: user.profile, _id: user._id },
+        'secret key',
+        {
+          expiresIn: '30m', // 60 * 60 * 24, // expires in 24 hours
+        }
+      )
 
       // return the token here
       return res.send({
